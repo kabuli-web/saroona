@@ -263,3 +263,9 @@ $language['form_input_invalid_feedback_not_correct'] = "هذا غير صحيح �
 $language['edit_card_details_card_links_save_button'] = "حفظ";
 $language['edit_card_details_card_links_edit_button'] = "تعديل";
 $language['edit_card_details_card_links_cancel_button'] = "الغاء";
+
+$language['terms_and_conditions_title'] = "الشروط و الاحكام";
+$language['terms_and_conditions_agree'] = "لقد قرأت و موافق على الشروط و الاحكام";
+
+
+$language['your_card_url_title'] = "رابط التسجيل العملاء";

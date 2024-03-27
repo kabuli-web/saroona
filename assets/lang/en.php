@@ -243,3 +243,11 @@ $language['form_input_invalid_feedback_exceeded_max_chars'] = "The Number of cha
 $language['edit_card_details_card_links_save_button'] = "Save";
 $language['edit_card_details_card_links_edit_button'] = "Edit";
 $language['edit_card_details_card_links_cancel_button'] = "Cancel";
+
+$language['terms_and_conditions_title'] = "Terms And Conditions";
+$language['terms_and_conditions_agree'] = "I have read and agree to the terms and conditions.";
+
+
+$language['your_card_url_title'] = "Your Card URL";
+
+
