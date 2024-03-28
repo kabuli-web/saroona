@@ -42,7 +42,6 @@
             $loopyToken = $userData['loopy_token'];
             $campaignId = $userData['loopy_card_id'];
 
-
             $_SESSION["loopy_token"] = $userData['loopy_token'];
             $_SESSION["loopy_card_id"] = $userData['loopy_card_id'];
         } else {

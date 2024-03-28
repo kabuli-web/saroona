@@ -27,12 +27,15 @@ File: Main Js File
                 document.getElementById("header-lang-img").src = "assets/images/flags/italy.jpg";
             } else if (lang == 'ru') {
                 document.getElementById("header-lang-img").src = "assets/images/flags/russia.jpg";
-            }else if (lang == 'ar') {
+            } else if (lang == 'ar') {
                 document.getElementById("header-lang-img").src = "assets/images/flags/arabic.jpg";
             }
             localStorage.setItem('Dason-language', lang);
             language = localStorage.getItem('Dason-language');
-            getLanguage();
+            console.log("language: "+language);
+            // getLanguage();
+           
+
         }
     }
 
@@ -40,15 +43,16 @@ File: Main Js File
     function getLanguage() {
         (language == null) ? setLanguage(default_lang) : false;
         $.getJSON('assets/lang/' + language + '.json', function (lang) {
+
             $('html').attr('lang', language);
-            if(language=="ar"){
+            if (language == "ar") {
                 $('html').attr('dir', "rtl");
-            }else if(language=="en"){
+            } else if (language == "en") {
                 $('html').attr('dir', "ltr");
-            }else{
-                $('html').attr('dir', "rtl");
+            } else {
+                $('html').attr('dir', "ltr");
             }
-           
+
             $.each(lang, function (index, val) {
                 (index === 'head') ? $(document).attr("title", val['title']) : false;
                 $("[data-key='" + index + "']").text(val);

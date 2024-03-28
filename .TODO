@@ -1,0 +1,6 @@
+- create a scheduled database updater that updates the number of stamps, 
+  enrolled users and other details and store it in the campaing Tables
+
+- create a stamper app or webpage that can be save to the homescreen of the app
+- make the stamper in a way that it does not need login every time its closed
+- creat the insight page if you want 

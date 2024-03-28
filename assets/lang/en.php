@@ -251,3 +251,14 @@ $language['terms_and_conditions_agree'] = "I have read and agree to the terms an
 $language['your_card_url_title'] = "Your Card URL";
 
 
+$language['delete_user'] = "Delete User";
+$language['cancel_delete_user'] = "Cancel";
+$language['confirm_delete_user'] = "Confirm";
+
+$language['card_deleted_succesfully'] = "Card Deleted";
+$language['points_added_successfully'] = "Points Added successfully";
+$language['messag_sent_succesfully'] = "Message Sent Successfully";
+
+$language['number_of_points'] = "POINTS";
+
+

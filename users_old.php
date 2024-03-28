@@ -169,12 +169,8 @@
                                             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                                                 <thead>
                                                     <tr>
-                                                        
-                                                        <?php 
-                                                        foreach($_SESSION['campaign_details']->fieldsToCollect as $field){
-                                                           echo "<th>$field->name</th>";
-                                                        }
-                                                        ?>
+                                                        <th><?php echo $language['users_table_name']; ?></th>
+                                                        <th><?php echo $language['users_table_phone']; ?></th>
                                                         <th><?php echo $language['users_table_status']; ?></th>
                                                         <th><?php echo $language['users_table_stamps']; ?></th>
                                                         <th><?php echo $language['users_table_rewards_earned']; ?></th>
@@ -192,7 +188,7 @@
                                         echo '<div class="alert alert-danger alert-dismissible fade show px-4 mb-0 text-center" role="alert">
                                         <i class="mdi mdi-block-helper d-block display-4 mt-2 mb-3 text-danger"></i>
                                         <h5 class="text-danger">' . $page_error . '</h5></div>';
-                                    } ?>
+                                                                            } ?>
 
                             <?php
 
@@ -252,48 +248,6 @@
 
         function initDataTable() {
 
-            function generateColumns() {
-                // Get the keys of the first row object
-                var fieldsToCollect = <?php echo json_encode($_SESSION["campaign_details"]->fieldsToCollect) ?>;
-               
-                console.log(fieldsToCollect)
-              
-                
-                // Create an array to hold column definitions
-                var columns = [];
-
-                // Push dynamic columns based on keys
-                fieldsToCollect.forEach(function(field) {
-                    columns.push({
-                        "data": function(row) {
-                            return row.customerDetails[field.name];
-                        }
-                    });
-                });
-
-                // Push remaining static columns
-                columns.push({
-                    "data": "status"
-                }, {
-                    "data": "totalStampsEarned"
-                }, {
-                    "data": "totalRewardsEarned"
-                }, {
-                    "data": "totalRewardsRedeemed"
-                }, {
-                    "data": null,
-                    "render": function(data, type, row) {
-                        return '<a href="user-details.php?id=' + row["id"] + '"><button type="button" class="btn btn-primary waves-effect waves-light">' +
-                            '<i class="bx bx-info-circle font-size-16 align-middle me-2"></i>' +
-                            '<?php echo $language['users_table_view_user']; ?>' +
-                            '</button> </a>';
-                    }
-                });
-
-                return columns;
-            }
-
-
             var dataTableMods = {
                 "lengthChange": true,
                 "processing": true,
@@ -326,7 +280,40 @@
                         return JSON.stringify(requestBody);
                     }
                 },
-                "columns": generateColumns(),
+                "columns": [{
+                        "data": function(row) {
+                            // Access the first value of customerDetails
+                            return row.customerDetails[Object.keys(row.customerDetails)[0]];
+                        }
+                    },
+                    {
+                        "data": function(row) {
+                            // Access the second value of customerDetails
+                            return row.customerDetails[Object.keys(row.customerDetails)[1]];
+                        }
+                    },
+                    {
+                        "data": "status"
+                    },
+                    {
+                        "data": "totalStampsEarned"
+                    },
+                    {
+                        "data": "totalRewardsEarned"
+                    },
+                    {
+                        "data": "totalRewardsRedeemed"
+                    },
+                    {
+                        "data": null,
+                        "render": function(data, type, row) {
+                            return '<a href="user-details.php?id=' + row["id"] + '"><button type="button" class="btn btn-primary waves-effect waves-light">' +
+                                '<i class="bx bx-info-circle font-size-16 align-middle me-2"></i>' +
+                                '<?php echo $language['users_table_view_user']; ?>' +
+                                '</button> </a>';
+                        }
+                    }
+                ],
                 "dom": 'lBfrtip', // Specify the container for buttons
                 "buttons": ['copy', 'excel', 'colvis']
             };

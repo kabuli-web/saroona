@@ -15,12 +15,107 @@
 <div id="layout-wrapper">
 
     <?php
-
+    session_start();
     require_once "layouts/config.php";
     $campaign_details;
-    if (isset($_GET['campaign_id'])) {
 
-        $campaignId = $_GET['campaign_id'];
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['campaign_details'])) {
+        $customerData = new stdClass();
+        $campaign_details = $_SESSION['campaign_details'];
+
+        // Loop through each field in the form
+        foreach ($campaign_details->fieldsToCollect as $field) {
+            $fieldNameWithoutUnderscore = str_replace(' ', '_', $field->name);
+            // Check if the field exists in the form submission
+            if (isset($_POST[$fieldNameWithoutUnderscore])) {
+                // Add the field data to the customerData object
+                if ($field->type == "tel") {
+
+                    $customerData->{$field->name} = "+966" . $_POST[$fieldNameWithoutUnderscore];
+                } else {
+                    $customerData->{$field->name} = $_POST[$fieldNameWithoutUnderscore];
+                }
+            } else {
+                // If the field is not set in the form submission, add it to customerData with an empty value
+                $customerData->{$fieldNameWithoutUnderscore} = "";
+            }
+        }
+        $cid = $campaign_details->id;
+        $customerDataJson = json_encode($customerData);
+
+        $postFields = json_encode(array(
+            "campaignId" => $cid,
+            "customerData" => $customerData
+        ));
+
+        echo "<script>console.log('Post data:');</script>";
+        echo "<script>console.log(" . json_encode($_POST) . ");</script>";
+
+        echo "<script>console.log('After creating customer data:');</script>";
+        echo "<script>console.log(" . json_encode($customerData) . ");</script>";
+
+        echo "<script>console.log('Curl post fields:');</script>";
+        echo "<script>console.log(" . $postFields . ");</script>";
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.loopyloyalty.com/v1/enrol/$cid",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                "campaignId" => $cid,
+                "customerData" => $customerData
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        if ($response === false) {
+            // cURL error occurred
+            $error = curl_error($curl);
+            $page_error = "cURL Error: " . $error;
+        } else {
+
+            // cURL request was successful
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if ($http_status == 201) {
+
+                // Success - process the response
+                $decoded_response = json_decode($response);
+
+                if ($decoded_response === null) {
+                    // JSON decoding error
+                    $page_error =  "Error decoding JSON response";
+                } else {
+
+                    header("Location: " . $decoded_response->url);
+                    exit(); // Ensure that further code is not executed
+                }
+                // You can parse and manipulate the response data here
+            } else {
+                header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?campaign_id=' . $campaign_details->id . '&enrolled=0&error=HTTP Error enrolling customer: ' . $http_status . '');
+                exit(); // Ensure that further code is not executed
+            }
+        }
+
+        // Perform further processing or validation as needed
+        // For example, you can validate the data, sanitize it, or store it in a database
+    }
+
+    if (isset($_GET['campaign_id']) || isset($_SESSION['campaign_details'])) {
+
+        $campaignId = isset($_GET['campaign_id']) ? $_GET['campaign_id'] : $_SESSION["campaign_details"]->id;
         $api = "https://api.loopyloyalty.com/v1/campaign/public/$campaignId";
 
         $curl = curl_init();
@@ -58,8 +153,8 @@
                     // JSON decoded successfully, process the data
 
                     $campaign_details = $decoded_response;
+                    $_SESSION['campaign_details'] = $campaign_details;
 
-                    echo "<script>console.log('After Modification:');</script>";
                     echo "<script>console.log(" . json_encode($campaign_details) . ");</script>";
                 }
                 // You can parse and manipulate the response data here
@@ -69,8 +164,13 @@
             }
         }
     } else {
-        $page_error =  "No Token Or Card Id Found";
+        $page_error =  "No Campaign Id Found to fetch";
     }
+
+
+
+
+
     ?>
     <!-- ============================================================== -->
     <!-- Start right Content here -->
@@ -83,8 +183,32 @@
             if (!isset($page_error)) {
 
             ?>
-                <div class="container-fluid w-50  d-flex flex-column align-items-center">
 
+                <div class="container-fluid w-50  d-flex flex-column align-items-center">
+                    <?php
+
+
+                    if (isset($_GET["enrolled"])) {
+                        if ($_GET["enrolled"] == 1) {
+                            $success_message = $language['card_updated_success_alert'];
+
+
+                            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-check-all me-2"></i>
+                    ' . $success_message . '
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+                        } else {
+                            $error = $_GET["error"];
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-check-all me-2"></i>
+                ' . $error . '' . $_GET["error"] . '
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+                        }
+                    }
+
+                    ?>
                     <div class="row">
                         <div class="col-12">
                             <h2><?php echo $campaign_details->business->name ?></h2>

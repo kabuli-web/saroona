@@ -274,5 +274,15 @@
 
 function changeLanguage(lang) {
         localStorage.setItem('Dason-language', lang);
+        
+            if (lang == "en") {
+                document.getElementsByTagName("html")[0].removeAttribute("dir");
+                document.getElementById('bootstrap-style').setAttribute('href', 'assets/css/bootstrap.min.css');
+                document.getElementById('app-style').setAttribute('href', 'assets/css/app.min.css');
+            } else {
+                document.getElementById('bootstrap-style').setAttribute('href', 'assets/css/bootstrap-rtl.min.css');
+                document.getElementById('app-style').setAttribute('href', 'assets/css/app-rtl.min.css');
+                document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
+            }
     }
  </script>

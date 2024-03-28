@@ -269,3 +269,14 @@ $language['terms_and_conditions_agree'] = "لقد قرأت و موافق على 
 
 
 $language['your_card_url_title'] = "رابط التسجيل العملاء";
+
+$language['delete_user'] = "حذف العميل";
+$language['cancel_delete_user'] = "الغاء";
+$language['confirm_delete_user'] = "تأكيد";
+$language['card_deleted_succesfully'] = "تم حذف العميل";
+
+
+$language['points_added_successfully'] = "تم اضافة النقاط";
+$language['messag_sent_succesfully'] = "تم ارسال الرسالة";
+
+$language['number_of_points'] = "عدد النقاط";
