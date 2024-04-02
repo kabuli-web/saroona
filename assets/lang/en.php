@@ -250,6 +250,7 @@ $language['terms_and_conditions_agree'] = "I have read and agree to the terms an
 
 $language['your_card_url_title'] = "Your Card URL";
 
+$language['manage_card'] = "Manage";
 
 $language['delete_user'] = "Delete User";
 $language['cancel_delete_user'] = "Cancel";

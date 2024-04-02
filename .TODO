@@ -4,3 +4,7 @@
 - create a stamper app or webpage that can be save to the homescreen of the app
 - make the stamper in a way that it does not need login every time its closed
 - creat the insight page if you want 
+- [#] create campaigns page 
+- [#] update any where there is campaign is to be fetched through get[campaign_id] 
+- fix the index counting system
+- add iphone to user details

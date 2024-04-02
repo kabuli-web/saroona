@@ -49,20 +49,14 @@
 
             // API key and campaign ID from user data
             $loopyToken = $userData['loopy_token'];
-            $campaignId = $userData['loopy_card_id'];
+            $campaignId = $_GET['campaign_id'];
 
             $_SESSION["loopy_token"] = $userData['loopy_token'];
-            $_SESSION["loopy_card_id"] = $userData['loopy_card_id'];
+           
 
             $campaign_sql = "SELECT * FROM campaigns WHERE campaign_id = '$campaignId'";
             $campaign_result = mysqli_query($link, $campaign_sql);
-    ?>
-            <script>
-                console.log("<?php echo $campaignId; ?>");
-                console.log("<?php echo $loopyToken; ?>");
-                console.log("<?php echo $campaign_sql; ?>");
-            </script>
-    <?php
+  
             if ($campaign_result && mysqli_num_rows($campaign_result) > 0) {
                 $campaignData = mysqli_fetch_assoc($campaign_result);
 
@@ -376,7 +370,7 @@
                             {
                                 "data": function(row) {
                                     // Access the second value of customerDetails
-                                    return '<a href="user-details.php?id=' + row["card_id"] + '"><?php echo $language["user"] ?></a>';
+                                    return '<a href="user-details.php?id=' + row["card_id"] + '&campaign_id=<?php echo $campaign_id;?>"><?php echo $language["user"] ?></a>';
                                 }
                             },
                             {

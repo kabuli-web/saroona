@@ -101,14 +101,14 @@
 
                                     // API key and campaign ID from user data
                                     $loopyToken = $userData['loopy_token'];
-                                    $campaignId = $userData['loopy_card_id'];
+                                    $campaignId = $_GET['campaign_id'];
 
                                     $_SESSION["loopy_token"] = $userData['loopy_token'];
-                                    $_SESSION["loopy_card_id"] = $userData['loopy_card_id'];
+                                   
                                     // API endpoint URL
                                     $apiUrl = "https://api.loopyloyalty.com/v1/card/cid/{$campaignId}";
 
-                                    $campaignId = $_SESSION['loopy_card_id'];
+                                  
                                     $api = "https://api.loopyloyalty.com/v1/campaign/id/$campaignId";
 
                                     $curl = curl_init();
@@ -171,7 +171,7 @@
                                                     <tr>
                                                         
                                                         <?php 
-                                                        foreach($_SESSION['campaign_details']->fieldsToCollect as $field){
+                                                        foreach($campaign_details->fieldsToCollect as $field){
                                                            echo "<th>$field->name</th>";
                                                         }
                                                         ?>
@@ -254,7 +254,7 @@
 
             function generateColumns() {
                 // Get the keys of the first row object
-                var fieldsToCollect = <?php echo json_encode($_SESSION["campaign_details"]->fieldsToCollect) ?>;
+                var fieldsToCollect = <?php echo json_encode($campaign_details->fieldsToCollect) ?>;
                
                 console.log(fieldsToCollect)
               
@@ -283,7 +283,7 @@
                 }, {
                     "data": null,
                     "render": function(data, type, row) {
-                        return '<a href="user-details.php?id=' + row["id"] + '"><button type="button" class="btn btn-primary waves-effect waves-light">' +
+                        return '<a href="user-details.php?id=' + row["id"] + '&campaign_id=<?php echo $campaign_id;?>"><button type="button" class="btn btn-primary waves-effect waves-light">' +
                             '<i class="bx bx-info-circle font-size-16 align-middle me-2"></i>' +
                             '<?php echo $language['users_table_view_user']; ?>' +
                             '</button> </a>';

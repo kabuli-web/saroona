@@ -9,9 +9,9 @@
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
                         <!-- <li class="menu-title" data-key="t-menu"><?php echo $language['Menu'] ?> </li> -->
-
+                        <?php $campaign_id = $_GET['campaign_id'];?>
                         <li>
-                            <a href="index.php">
+                            <a href="index.php?campaign_id=<?php echo $campaign_id;?>">
                                 <i data-feather="home"></i>
                                 <!-- <span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span> -->
                                 <span data-key="t-dashboard"><?php echo $language['Dashboard'] ?> </span>
@@ -19,7 +19,7 @@
                         </li>
 
                         <li>
-                            <a href="insights.php">
+                            <a href="insights.php?campaign_id=<?php echo $campaign_id;?>">
                                 <i data-feather="trending-up"></i>
                                 <!-- <span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span> -->
                                 <span data-key="t-insights"><?php echo $language['insights'] ?> </span>
@@ -27,7 +27,7 @@
                         </li>
 
                         <li>
-                            <a href="users.php">
+                            <a href="users.php?campaign_id=<?php echo $campaign_id;?>">
                                 <i data-feather="users"></i>
                                 <!-- <span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span> -->
                                 <span data-key="t-users"><?php echo $language['users'] ?> </span>
@@ -35,7 +35,7 @@
                         </li>
 
                         <li>
-                            <a href="messages.php">
+                            <a href="messages.php?campaign_id=<?php echo $campaign_id;?>">
                                 <i data-feather="message-square"></i>
                                 <!-- <span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span> -->
                                 <span data-key="t-messages"><?php echo $language['messages'] ?> </span>
@@ -43,7 +43,7 @@
                         </li>
 
                         <li>
-                            <a href="edit-card.php">
+                            <a href="edit-card.php?campaign_id=<?php echo $campaign_id;?>">
                                 <i data-feather="map"></i>
                                 <!-- <span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span> -->
                                 <span data-key="t-map"><?php echo $language['edit_card'] ?> </span>

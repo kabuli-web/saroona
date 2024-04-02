@@ -1,0 +1,59 @@
+.iphone-container{
+    width:200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 410px;
+    background-color: #191e22;
+    border-radius: 45px;
+}
+.iphone-image{
+    width:200px;
+    position: absolute;
+    /* z-index: -1000; */
+}
+
+.wallet-card{
+    width:95%;
+    border-radius: 15px;
+    margin: 20px;
+    margin-top: 50px;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.stripe-image{
+   
+    width: 100%;
+}
+.logo-container{
+    display: flex;
+    justify-content: left;
+
+}
+.logo-container >img{
+    width: 60%;
+    padding: 10px;
+}
+
+.body-container{
+padding-top: 10px;
+}
+
+.stamps-details p{
+    margin: 0px;
+    font-size: 8px;
+    text-align: left;
+}
+
+.foot-container{
+display: flex;
+justify-content: center;
+align-items: end;
+margin-top: auto;
+}
+
+.foot-container > img {
+    width: 80%;
+}

@@ -10,8 +10,6 @@
     <?php include 'layouts/head.php'; ?>
     <link href="assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
     <?php include 'layouts/head-style.php'; ?>
-    <link rel="stylesheet" href="assets/css/iphone.css">
-
 
 </head>
 
@@ -35,7 +33,6 @@
             $page_error;
             $customer_details;
             $campaign_id = $_GET['campaign_id'];
-
             if (isset($_GET['id']) && isset($_SESSION["loopy_token"])) {
                 $clientId = $_GET['id'];
                 $curl = curl_init();
@@ -57,26 +54,6 @@
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://api.loopyloyalty.com/v1/campaign/id/' . $campaign_id,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'GET',
-                    CURLOPT_HTTPHEADER => array(
-                        'Authorization: ' . $_SESSION["loopy_token"]
-                    ),
-                ));
-
-                $campaign_details = curl_exec($curl);
-                $campaign_details_decoded = json_decode($campaign_details);
-                curl_close($curl);
-                // Encode the decoded JSON data as URL-encoded format
                 if ($response === false) {
 
                     // cURL error occurred
@@ -90,10 +67,6 @@
 
                         // Success - process the response
                         $decoded_response = json_decode($response, true);
-                        $decoded_response_object = json_decode($response);
-                        $card_design = $decoded_response_object->card->stripImage;
-                        $stripeTemplate = json_encode($card_design);
-                        $urlEncodedJson = http_build_query(["json" => $stripeTemplate]);
                         if ($decoded_response === null) {
                             // JSON decoding error
                             $page_error =  "Error decoding JSON response";
@@ -105,7 +78,7 @@
                         // You can parse and manipulate the response data here
                     } else {
                         $error_ = json_decode($response);
-                        $page_error =  "HTTP Error: " . $http_status . json_encode($error_);
+                        $page_error =  "HTTP Error: " . $http_status. json_encode($error_);
                     }
                 }
             } else {
@@ -163,11 +136,11 @@
                                 // JSON decoded successfully, process the data
                                 if ($decoded_response["success"]) {
                                     // Redirect to the same page to prevent form resubmission
-                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id . '&message_sent=1');
+                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id='.$campaign_id.'&message_sent=1');
                                     exit(); // Ensure that further code is not executed
 
                                 } else {
-                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id . '&message_sent=0');
+                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id='.$campaign_id.'&message_sent=0');
                                     exit(); // Ensure that further code is not executed;
                                 }
                             }
@@ -175,7 +148,7 @@
                         } else {
                             // HTTP status code indicates an error
                             $error_ = json_decode($response);
-                            $page_error =  "HTTP Error: " . $http_status . json_encode($error_);
+                            $page_error =  "HTTP Error: " . $http_status. json_encode($error_);
                         }
                     }
                 }
@@ -231,13 +204,13 @@
                                 // JSON decoded successfully, process the data
                                 if ($decoded_response["success"]) {
                                     $host = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-                                    $users_link = $host . "/saroona/users.php?card_deleted=1";
+                                    $users_link = $host ."/saroona/users.php?card_deleted=1";
                                     // Redirect to the same page to prevent form resubmission
                                     header("Location: " . htmlspecialchars($users_link) . "&campaign_id=" . $campaign_id);
                                     exit(); // Ensure that further code is not executed
 
                                 } else {
-                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id . '&card_deleted=0');
+                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id='.$campaign_id.'&card_deleted=0');
                                     exit(); // Ensure that further code is not executed;
                                 }
                             }
@@ -245,14 +218,14 @@
                         } else {
                             // HTTP status code indicates an error
                             $error_ = json_decode($response);
-                            $page_error =  "HTTP Error: " . $http_status . json_encode($error_);
+                            $page_error =  "HTTP Error: " . $http_status. json_encode($error_);
                         }
                     }
                 }
 
 
                 if (isset($_POST["post_type"]) && $_POST["post_type"] == "add_points") {
-                    ?>
+             ?>
                     <script>
                         console.log("<?php echo $_GET["id"]; ?>")
                         console.log("<?php echo $_POST["number_of_points"]; ?>")
@@ -300,11 +273,11 @@
                                 // JSON decoded successfully, process the data
                                 if ($decoded_response["success"]) {
                                     // Redirect to the same page to prevent form resubmission
-                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id . '&points_added=1');
+                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id='.$campaign_id.'&points_added=1');
                                     exit(); // Ensure that further code is not executed
                                 } else {
                                     // Redirect to the same page to prevent form resubmission
-                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id . '&points_added=0');
+                                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id='.$campaign_id.'&points_added=0');
                                     exit(); // Ensure that further code is not executed
                                 }
                             }
@@ -312,7 +285,7 @@
                         } else {
                             // HTTP status code indicates an error
                             $error_ = json_decode($response);
-                            $page_error =  "HTTP Error: " . $http_status . json_encode($error_);
+                            $page_error =  "HTTP Error: " . $http_status. json_encode($error_);
                         }
                     }
 
@@ -382,8 +355,8 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-8 d-flex flex-column justify-content-center ">
-                            <div class="card mb-2" style="height:100%">
+                        <div class="col-12 col-md-8">
+                            <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h4>
                                         <?php echo $language["users_details"]; ?>
@@ -406,7 +379,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal"><?php echo $language['cancel_delete_user']; ?></button>
-                                                        <?php $post_delete_url = htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id; ?>
+                                                        <?php $post_delete_url = htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"].'&campaign_id='.$campaign_id; ?>
                                                         <form action="<?php echo $post_delete_url ?>" method="post">
                                                             <input type="hidden" name="post_type" value="delete_card" />
                                                             <input type="hidden" name="card_id" value="<?php echo $_GET['id']; ?>" />
@@ -421,18 +394,18 @@
                                 </div>
                                 <div class="card-body">
 
+                                    
+                                    <?php 
 
-                                    <?php
-
-                                    foreach ($user_data["customerDetails"] as $detail_name => $detail_value) {
-                                    ?>
-                                        <div class="mt-3 pt-1">
+                                        foreach($user_data["customerDetails"] as $detail_name=>$detail_value){
+                                            ?>
+                                             <div class="mt-3 pt-1">
                                             <p class="text-muted mb-0">
-                                                <?php echo $detail_name . ': ' . $detail_value ?></p>
-                                            </a>
-                                        </div>
-                                    <?php
-                                    }
+                                                <?php echo $detail_name.': '.$detail_value ?></p>
+                                        </a>
+                                    </div>
+                                            <?php
+                                        }
                                     ?>
 
                                     <div class="mt-3 pt-1">
@@ -444,24 +417,33 @@
                             </div>
                         </div>
 
-                        <div class=" col-12 col-md-4  mb-2 d-flex justify-content-center align-items-start">
-                            <div class="iphone-container">
-                                <img class="iphone-image" src="assets/images/iphone.png" alt="">
-                                <div class="wallet-card" style="background-color: <?php echo $campaign_details_decoded->design->backgroundColor; ?>;">
-                                    <div class="logo-container">
-                                        <img src="https://s3.amazonaws.com/passkit-api-core-production/<?php echo $campaign_details_decoded->design->logoImageId ?>" alt="">
-                                    </div>
-                                    <img src="https://api.loopyloyalty.com/v1/images/?<?php echo $urlEncodedJson; ?>" class="stripe-image" alt="">
-
-                                    <div class="body-container">
-                                        <div class="stamps-details">
-                                            <p style="color: <?php echo $campaign_details_decoded->design->textColor; ?>;"><?php echo $campaign_details_decoded->customFrontFields[0]->label ?> </p>
-                                            <p style="color: <?php echo $campaign_details_decoded->design->textColor; ?>;"><?php echo $card_design->stampedStatus; ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="foot-container">
-                                        <img src="assets/images/barcode.png" alt="">
-                                    </div>
+                        <div class=" col-12 col-md-4 mb-3 mb-sm-0 d-flex justify-content-center align-items-start">
+                            <div class="loyalty-card  rounded-2">
+                                <!-- Loyalty card background image -->
+                                <!-- Stamps section -->
+                                <div class="stamps-container">
+                                    <?php
+                                    $totalStamps = $user_data['stripImage']['totalStamps'];
+                                    $current_stamps = $user_data['totalStampsEarned'] - ($user_data['totalRewardsEarned'] * $totalStamps);
+                                    try {
+                                        if (!isset($user_data['stripImage']['unstampOpacity']) || !isset($user_data['stripImage']['unstampImageURL'])) {
+                                            throw new Exception("Error: Stamps data not available");
+                                        }
+                                        // Generate stamps based on the total stamps value
+                                        // Example value, replace this with your dynamic value
+                                        for ($i = 1; $i <= $totalStamps; $i++) {
+                                            if ($i <= $current_stamps) {
+                                                echo "<div class='stamp'><img src='{$user_data['stripImage']['stampImageURL']}'></div>";
+                                            } else {
+                                                echo "<div class='stamp'><img style='o: {$user_data['stripImage']['unstampOpacity']};' src='{$user_data['stripImage']['unstampImageURL']}'></div>";
+                                            }
+                                        }
+                                    } catch (Exception $e) {
+                                        $numberOfPoints = $language['number_of_points'];
+                                        echo "<h3>$numberOfPoints</h3></br>";
+                                        echo "<h3>$current_stamps</h3> / <h3>$totalStamps</h3>";
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -487,10 +469,10 @@
                                             <?php
                                             if (isset($_GET["message_sent"])) {
                                                 if ($_GET["message_sent"] == 1) {
-                                                    $messag_sent_succesfully_message = $language['messag_sent_succesfully'];
+                                                    $messag_sent_succesfully_message= $language['messag_sent_succesfully'];
                                                     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                                                         <i class="mdi mdi-check-all me-2"></i>
-                                                         ' . $messag_sent_succesfully_message . '
+                                                         '.$messag_sent_succesfully_message.'
                                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                                     </div>';
                                                 } else {
@@ -506,10 +488,10 @@
                                             <?php
                                             if (isset($_GET["points_added"])) {
                                                 if ($_GET["points_added"] == 1) {
-                                                    $points_added_successfully_message = $language['points_added_successfully'];
+                                                    $points_added_successfully_message= $language['points_added_successfully'];
                                                     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                                                         <i class="mdi mdi-check-all me-2"></i>
-                                                         ' . $points_added_successfully_message . '
+                                                         '.$points_added_successfully_message.'
                                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                                     </div>';
                                                 } else {
@@ -525,10 +507,10 @@
                                             <?php
                                             if (isset($_GET["card_deleted"])) {
                                                 if ($_GET["card_deleted"] == 1) {
-                                                    $card_deleted_success_message = $language['card_deleted_succesfully'];
+                                                    $card_deleted_success_message= $language['card_deleted_succesfully'];
                                                     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                                                         <i class="mdi mdi-check-all me-2"></i>
-                                                         ' . $card_deleted_success_message . '
+                                                         '.$card_deleted_success_message.'
                                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                                     </div>';
                                                 } else {
@@ -545,7 +527,7 @@
                                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                                     <div>
                                                         <?php
-                                                        $post_url_current_with_id = htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] . '&campaign_id=' . $campaign_id;;
+                                                        $post_url_current_with_id = htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $_GET["id"] .'&campaign_id='.$campaign_id;;
                                                         ?>
                                                         <form method="post" action="<?php echo $post_url_current_with_id ?>">
                                                             <div class="mb-3">

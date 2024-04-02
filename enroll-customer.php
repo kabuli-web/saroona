@@ -18,7 +18,7 @@
     session_start();
     require_once "layouts/config.php";
     $campaign_details;
-
+    $campaign_id = $_GET['campaign_id'];
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['campaign_details'])) {
         $customerData = new stdClass();
@@ -218,7 +218,7 @@
                     $post_url_current_with_id = htmlspecialchars($_SERVER["PHP_SELF"]);
                     ?>
 
-                    <form class="needs-validation" novalidate action="<?php echo $post_url_current_with_id ?>" method="post">
+                    <form class="needs-validation" novalidate action="<?php echo $post_url_current_with_id . "?campaign_id=" . $campaign_id; ?>" method="post">
                         <?php
                         foreach ($campaign_details->fieldsToCollect as $field) {
                             if (!isset($field->required)) {
@@ -306,35 +306,6 @@
     (function() {
         'use strict';
         window.addEventListener('load', function() {
-
-
-
-            // Add an event listener to all select elements with the class form-select
-            document.querySelectorAll('.form-select').forEach(function(select) {
-                // Add change event listener to each select element
-                select.addEventListener('change', function() {
-                    // Get the closest input element with the class card-links
-                    var input = this.closest('tr').querySelector('.card-links');
-
-                    // Check the value of the selected option
-                    switch (this.value) {
-                        case 2: // If the selected value is '2' (email)
-                            input.setAttribute('type', 'email'); // Change the input type to 'email'
-                            break;
-                        case 1: // If the selected value is '1' (phone)
-                            input.setAttribute('type', 'tel'); // Change the input type to 'tel'
-                            break;
-                        case 0: // If the selected value is '0' (url)
-                            input.setAttribute('type', 'url'); // Change the input type to 'url'
-                            break;
-                        default: // For any other value, change the input type to 'text'
-                            input.setAttribute('type', 'text');
-                    }
-                });
-            });
-
-
-
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission

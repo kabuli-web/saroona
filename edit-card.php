@@ -27,7 +27,7 @@
 
     $page_error;
     $campaign_details;
-    $campaignId;
+    $campaignId= $_GET['campaign_id'];
     // Get the user's ID from the session
     if (!isset($_SESSION['loopy_token']) || !isset($_SESSION['loopy_card_id'])) {
         $userId = $_SESSION['id'];
@@ -40,7 +40,7 @@
 
             // API key and campaign ID from user data
             $loopyToken = $userData['loopy_token'];
-            $campaignId = $userData['loopy_card_id'];
+           
 
             $_SESSION["loopy_token"] = $userData['loopy_token'];
             $_SESSION["loopy_card_id"] = $userData['loopy_card_id'];
@@ -53,7 +53,6 @@
     $location_details;
     if (isset($_SESSION["loopy_token"]) && isset($_SESSION["loopy_card_id"])) {
 
-        $campaignId = $_SESSION['loopy_card_id'];
         $api = "https://api.loopyloyalty.com/v1/campaign/id/$campaignId";
 
         $curl = curl_init();
@@ -190,17 +189,17 @@
 
         $result = pushUpdates($_SESSION["loopy_card_id"]);
         if ($result['success']) {
-            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?updated=1');
+            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?updated=1'.'&campaign_id='.$campaign_id);
             exit(); // Ensure that further code is not executed
         } else {
-            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?updated=0&error=' . $result['error']);
+            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?updated=0&campaign_id='.$campaign_id.'&error=' . $result['error']);
             exit(); // Ensure that further code is not executed
         }
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" &&  isset($_POST["post_type"]) && $_POST["post_type"] == "save_changes") {
         if (isset($_SESSION["campaign_details"]) && isset($_SESSION["loopy_card_id"])) {
-            $campaignId = $_SESSION["loopy_card_id"];
+          
 
             //    // Debugging: Print the structure of $campaign_details before modification
             //    echo "<script>console.log('Before Modification:');</script>";
@@ -284,12 +283,12 @@
                     } else {
                         $campaign_details = $decoded_response;
                         $_SESSION["campaign_details"] = $campaign_details;
-                        header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?saved=1');
+                        header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?saved=1'.'&campaign_id='.$campaign_id);
                         exit(); // Ensure that further code is not executed
                     }
                     // You can parse and manipulate the response data here
                 } else {
-                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?saved=0&error=HTTP Error Updating Card: ' . $http_status . '');
+                    header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . '?saved=0&campaign_id='.$campaign_id.'&error=HTTP Error Updating Card: ' . $http_status . '');
                     exit(); // Ensure that further code is not executed
                 }
             }
@@ -370,7 +369,7 @@
                     <?php
                     if (isset($_GET['saved']) && $_GET['saved'] == 1) {
                     ?>
-                        <form method="post" action="<?php echo $post_url_current_with_id ?>">
+                        <form method="post" action="<?php echo $post_url_current_with_id .'?campaign_id=' . $campaign_id; ?>">
                             <div class="mt-4 mb-4">
                                 <button type="submit" class="btn btn-primary w-md"><?php echo $language['update_card_button']; ?></button>
                             </div>
@@ -380,7 +379,7 @@
                     }
                     ?>
 
-                    <form method="post" class="needs-validation" novalidate action="<?php echo $post_url_current_with_id ?>">
+                    <form method="post" class="needs-validation" novalidate action="<?php echo $post_url_current_with_id .'?campaign_id=' . $campaign_id; ?>">
 
                         <div class="row">
                             <div class="col-12">

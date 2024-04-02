@@ -274,7 +274,7 @@ $language['delete_user'] = "حذف العميل";
 $language['cancel_delete_user'] = "الغاء";
 $language['confirm_delete_user'] = "تأكيد";
 $language['card_deleted_succesfully'] = "تم حذف العميل";
-
+$language['manage_card'] = "ادارة الباطقة";
 
 $language['points_added_successfully'] = "تم اضافة النقاط";
 $language['messag_sent_succesfully'] = "تم ارسال الرسالة";
